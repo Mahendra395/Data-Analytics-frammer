@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Frammer{% endblock %}</title>
+<style>
+  body { margin: 0; padding: 0; background: #0a0a0a; color: #e4e4e7; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+  .container { max-width: 640px; margin: 0 auto; padding: 32px 24px; }
+  .header { text-align: center; padding-bottom: 24px; border-bottom: 1px solid #27272a; margin-bottom: 24px; }
+  .header h1 { font-size: 20px; font-weight: 700; color: #ffffff; margin: 0 0 4px; }
+  .header .subtitle { font-size: 13px; color: #71717a; }
+  .section { margin-bottom: 24px; }
+  .section-title { font-size: 14px; font-weight: 600; color: #a1a1aa; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
+  .kpi-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+  .kpi-card { flex: 1 1 140px; background: #111111; border: 1px solid #1c1c1c; border-radius: 8px; padding: 14px 16px; }
+  .kpi-label { font-size: 11px; color: #71717a; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
+  .kpi-value { font-size: 22px; font-weight: 700; color: #ffffff; }
+  .kpi-delta { font-size: 12px; margin-top: 2px; }
+  .delta-up { color: #22c55e; }
+  .delta-down { color: #e8212b; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; padding: 8px 12px; background: #18181b; color: #a1a1aa; font-weight: 600; border-bottom: 1px solid #27272a; }
+  td { padding: 8px 12px; border-bottom: 1px solid #1c1c1c; color: #d4d4d8; }
+  tr:last-child td { border-bottom: none; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .badge-red { background: rgba(232,33,43,0.15); color: #e8212b; }
+  .badge-green { background: rgba(34,197,94,0.15); color: #22c55e; }
+  .badge-amber { background: rgba(245,158,11,0.15); color: #f59e0b; }
+  .cta { display: inline-block; margin-top: 16px; padding: 10px 24px; background: #e8212b; color: #ffffff; text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: 600; }
+  .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #27272a; text-align: center; font-size: 11px; color: #52525b; }
+  .footer a { color: #71717a; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="container">
+  {% block content %}{% endblock %}
+  <div class="footer">
+    <p>Frammer Analytics &middot; {{ generated_at[:10] if generated_at else '' }}</p>
+    <p><a href="{{ dashboard_url | default('#') }}">Open Dashboard</a></p>
+  </div>
+</div>
+</body>
+</html>

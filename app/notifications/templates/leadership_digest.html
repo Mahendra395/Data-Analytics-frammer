@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title %}Leadership Digest – Frammer{% endblock %}
+{% block content %}
+<div class="header">
+  <h1>Weekly Leadership Digest</h1>
+  <div class="subtitle">{{ period_label | default('This Period') }}</div>
+</div>
+
+<div class="section">
+  <div class="section-title">Content Pipeline</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">Uploaded</div>
+      <div class="kpi-value">{{ kpis.total_uploaded | default(0) | int }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Processed</div>
+      <div class="kpi-value">{{ kpis.total_processed | default(0) | int }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Published</div>
+      <div class="kpi-value">{{ kpis.total_published | default(0) | int }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Publish Conversion</div>
+      <div class="kpi-value">{{ "%.1f" | format((kpis.publish_rate | default(0)) * 100) }}%</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Duration</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">Processed Hours</div>
+      <div class="kpi-value">{{ "%.1f" | format(kpis.processed_duration_hrs | default(0)) }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Published Hours</div>
+      <div class="kpi-value">{{ "%.1f" | format(kpis.published_duration_hrs | default(0)) }}</div>
+    </div>
+  </div>
+</div>
+
+{% if top_growth %}
+<div class="section">
+  <div class="section-title">Top Growth</div>
+  <table>
+    <tr>
+      <th>{{ top_growth.dimension | default('Entity') }}</th>
+      <th>Count</th>
+      <th>Growth</th>
+    </tr>
+    <tr>
+      <td>{{ top_growth.name | default('—') }}</td>
+      <td>{{ top_growth.count | default(0) }}</td>
+      <td>
+        {% if top_growth.growth_pct is defined and top_growth.growth_pct is not none %}
+          <span class="{{ 'delta-up' if top_growth.growth_pct >= 0 else 'delta-down' }}">
+            {{ "%+.1f" | format(top_growth.growth_pct) }}%
+          </span>
+        {% else %}
+          —
+        {% endif %}
+      </td>
+    </tr>
+  </table>
+</div>
+{% endif %}
+
+{% if biggest_risk %}
+<div class="section">
+  <div class="section-title">Biggest Risk</div>
+  <table>
+    <tr>
+      <th>Channel</th>
+      <th>Publish Rate</th>
+      <th>Volume</th>
+    </tr>
+    <tr>
+      <td>{{ biggest_risk.channel | default('—') }}</td>
+      <td><span class="badge badge-red">{{ "%.1f" | format((biggest_risk.publish_rate | default(0)) * 100) }}%</span></td>
+      <td>{{ biggest_risk.count | default(0) }}</td>
+    </tr>
+  </table>
+</div>
+{% endif %}
+
+{% if dq_summary %}
+<div class="section">
+  <div class="section-title">Data Quality</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">DQ Score</div>
+      <div class="kpi-value">{{ "%.1f" | format(dq_summary.overall_score | default(0)) }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Invalid URLs</div>
+      <div class="kpi-value">{{ dq_summary.invalid_urls | default(0) }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Duplicate IDs</div>
+      <div class="kpi-value">{{ dq_summary.duplicate_ids | default(0) }}</div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% if funnel %}
+<div class="section">
+  <div class="section-title">Funnel Snapshot</div>
+  <table>
+    <tr><th>Stage</th><th>Count</th></tr>
+    {% for stage in funnel %}
+    <tr>
+      <td>{{ stage.name }}</td>
+      <td>{{ stage.count | int }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endif %}
+
+<a class="cta" href="{{ dashboard_url | default('#') }}">View Full Dashboard →</a>
+{% endblock %}

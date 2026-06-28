@@ -1,0 +1,16 @@
+[Unit]
+Description=Frammer FastAPI Backend
+After=network.target
+
+[Service]
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/opt/frammer-backend/current
+EnvironmentFile=/opt/frammer-backend/shared/.env
+ExecStart=/opt/frammer-backend/venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000 --workers 1
+Restart=always
+RestartSec=5
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target

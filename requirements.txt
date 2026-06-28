@@ -1,0 +1,16 @@
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+sqlalchemy[asyncio]>=2.0.36
+asyncpg>=0.30.0
+alembic>=1.14.0
+pydantic>=2.10.0
+pydantic-settings>=2.6.0
+python-dotenv>=1.0.1
+python-multipart>=0.0.19
+pandas>=2.2.3
+numpy>=2.2.0
+httpx>=0.28.0
+scipy>=1.14.0
+PyJWT>=2.10.0
+supabase>=2.10.0
+starlette>=0.52.1

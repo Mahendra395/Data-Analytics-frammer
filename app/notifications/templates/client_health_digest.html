@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Client Health Digest – Frammer{% endblock %}
+{% block content %}
+<div class="header">
+  <h1>Client Health Digest</h1>
+  <div class="subtitle">{{ client_name | default('Client') }} &middot; {{ period_label | default('This Period') }}</div>
+</div>
+
+<div class="section">
+  <div class="section-title">Usage Overview</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">Total Uploaded</div>
+      <div class="kpi-value">{{ kpis.total_uploaded | default(0) | int }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Published</div>
+      <div class="kpi-value">{{ kpis.total_published | default(0) | int }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Publish Conversion</div>
+      <div class="kpi-value">{{ "%.1f" | format((kpis.publish_rate | default(0)) * 100) }}%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Active Channels</div>
+      <div class="kpi-value">{{ kpis.active_channels | default(0) }}</div>
+    </div>
+  </div>
+</div>
+
+{% if top_channels %}
+<div class="section">
+  <div class="section-title">Top Channels</div>
+  <table>
+    <tr><th>Channel</th><th>Uploaded</th><th>Published</th><th>Rate</th></tr>
+    {% for ch in top_channels[:5] %}
+    <tr>
+      <td>{{ ch.channel }}</td>
+      <td>{{ ch.uploaded | int }}</td>
+      <td>{{ ch.published | int }}</td>
+      <td>{{ "%.0f" | format((ch.rate | default(0)) * 100) }}%</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endif %}
+
+{% if top_content_types %}
+<div class="section">
+  <div class="section-title">Content Types</div>
+  <table>
+    <tr><th>Type</th><th>Count</th></tr>
+    {% for ct in top_content_types[:5] %}
+    <tr>
+      <td>{{ ct.name }}</td>
+      <td>{{ ct.count | int }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endif %}
+
+<a class="cta" href="{{ dashboard_url | default('#') }}">View Client Dashboard →</a>
+{% endblock %}

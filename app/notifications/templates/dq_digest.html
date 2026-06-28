@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Data Quality Digest – Frammer{% endblock %}
+{% block content %}
+<div class="header">
+  <h1>Data Quality Digest</h1>
+  <div class="subtitle">{{ period_label | default('Today') }}</div>
+</div>
+
+<div class="section">
+  <div class="section-title">Quality Score</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">Overall DQ Score</div>
+      <div class="kpi-value">{{ "%.1f" | format(dq_score | default(0)) }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Total Records</div>
+      <div class="kpi-value">{{ total_records | default(0) | int }}</div>
+    </div>
+  </div>
+</div>
+
+{% if failing_fields %}
+<div class="section">
+  <div class="section-title">Top Failing Fields</div>
+  <table>
+    <tr><th>Field</th><th>Null %</th><th>Status</th></tr>
+    {% for f in failing_fields[:6] %}
+    <tr>
+      <td>{{ f.field }}</td>
+      <td>{{ "%.1f" | format(f.null_pct | default(0)) }}%</td>
+      <td>
+        {% if f.null_pct | default(0) > 20 %}
+          <span class="badge badge-red">Critical</span>
+        {% elif f.null_pct | default(0) > 5 %}
+          <span class="badge badge-amber">Warning</span>
+        {% else %}
+          <span class="badge badge-green">Good</span>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endif %}
+
+<div class="section">
+  <div class="section-title">Quality Flags</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">Invalid URLs</div>
+      <div class="kpi-value">{{ invalid_urls | default(0) }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Duplicate IDs</div>
+      <div class="kpi-value">{{ duplicate_ids | default(0) }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Missing Team</div>
+      <div class="kpi-value">{{ missing_team | default(0) }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Missing Platform</div>
+      <div class="kpi-value">{{ missing_platform | default(0) }}</div>
+    </div>
+  </div>
+</div>
+
+<a class="cta" href="{{ dashboard_url | default('#') }}">View Quality Dashboard →</a>
+{% endblock %}

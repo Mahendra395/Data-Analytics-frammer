@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}{{ subject | default('Report') }} – Frammer{% endblock %}
+{% block content %}
+<div class="header">
+  <h1>{{ subject | default('Manual Report') }}</h1>
+  <div class="subtitle">{{ period_label | default('') }}</div>
+</div>
+
+<div class="section">
+  <div class="section-title">Summary</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">Uploaded</div>
+      <div class="kpi-value">{{ kpis.total_uploaded | default(0) | int }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Processed</div>
+      <div class="kpi-value">{{ kpis.total_processed | default(0) | int }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Published</div>
+      <div class="kpi-value">{{ kpis.total_published | default(0) | int }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Publish Rate</div>
+      <div class="kpi-value">{{ "%.1f" | format((kpis.publish_rate | default(0)) * 100) }}%</div>
+    </div>
+  </div>
+</div>
+
+{% if filters_applied %}
+<div class="section">
+  <div class="section-title">Filters Applied</div>
+  <table>
+    {% for key, value in filters_applied.items() %}
+    {% if value %}
+    <tr><td style="color:#71717a;">{{ key }}</td><td>{{ value }}</td></tr>
+    {% endif %}
+    {% endfor %}
+  </table>
+</div>
+{% endif %}
+
+<a class="cta" href="{{ dashboard_url | default('#') }}">Open Dashboard →</a>
+{% endblock %}
