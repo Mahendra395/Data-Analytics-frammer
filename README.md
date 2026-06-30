@@ -14,4 +14,4 @@ This bundle contains a minimal production deployment setup for a FastAPI backend
 - App entrypoint is `main:app`
 - EC2 OS user is `ubuntu`
 - Project is deployed under `/opt/frammer-backend`
-- Nginx proxies to `127.0.0.1:8000`
+- Nginx proxies to `127.0.0.1:8000` 
